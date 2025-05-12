@@ -1,147 +1,237 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZ Code</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EZ Code</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            color: white;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+    :root {
+      --bg-color: #e0e0e0;
+      --text-color: #333;
+      --primary-color: #007bff;
+      --shadow-light: #ffffff;
+      --shadow-dark: #c1c1c1;
+      --button-color: #28a745;
+      --pre-bg: #f0f0f0;
+    }
 
-        .header {
-            padding: 20px;
-            font-size: 24px;
-            font-weight: 600;
-            text-align: left;
-        }
+    body.dark-mode {
+      --bg-color: #1e1e1e;
+      --text-color: #f0f0f0;
+      --primary-color: #3399ff;
+      --shadow-light: #2c2c2c;
+      --shadow-dark: #0f0f0f;
+      --button-color: #218838;
+      --pre-bg: #2b2b2b;
+    }
 
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .input-container {
-            width: 100%;
-            max-width: 700px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        input, button, pre {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem 0.5rem 2rem;
+    }
 
-        input {
-            border: 2px solid #007bff;
-            outline: none;
-            transition: all 0.3s ease;
-        }
+    .header {
+      font-size: 2rem;
+      font-weight: 600;
+    }
 
-        input:focus {
-            border-color: #0056b3;
-            box-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
-        }
+    .mode-toggle {
+      font-size: 1.5rem;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        button {
-            color: white;
-            background: #007bff;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+    .mode-toggle:hover {
+      box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    }
 
-        button:hover {
-            background: #0056b3;
-        }
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
 
-        pre {
-            text-align: left;
-            background: #1c1c1c;
-            color: #f8f8f2;
-            border: 1px solid #333;
-            max-height: 300px;
-            min-height: 150px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            overflow-x: auto;
-            overflow-y: auto;
-        }
+    .input-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-        .copy-button {
-            background: #28a745;
-            border: none;
-            cursor: pointer;
-        }
+    input,
+    button,
+    pre {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      transition: all 0.3s ease;
+    }
 
-        .copy-button:hover {
-            background: #218838;
-        }
-    </style>
+    input:focus {
+      outline: none;
+      box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .copy-button {
+      background-color: var(--button-color);
+      color: white;
+    }
+
+    pre {
+      background-color: var(--pre-bg);
+      overflow: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        font-size: 1.5rem;
+      }
+
+      input,
+      button,
+      pre {
+        font-size: 0.95rem;
+        padding: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .input-container {
+        padding: 0 0.5rem;
+      }
+
+      input,
+      button,
+      pre {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="top-bar">
     <div class="header">EZ Code</div>
-    <div class="content">
-        <div class="input-container">
-            <input type="text" id="inputText" placeholder="Describe el código que necesitas...">
-            <button id="generateButton">Generar Código</button>
-            <pre id="responseText"></pre>
-            <button class="copy-button" id="copyButton">Copiar Código</button>
-        </div>
+    <button class="mode-toggle" id="modeToggle">🌙</button>
+  </div>
+
+  <div class="content">
+    <div class="input-container">
+      <input type="text" id="inputText" placeholder="Describe el código que necesitas...">
+      <button id="generateButton">Generar Código</button>
+      <pre id="responseText"></pre>
+      <button class="copy-button" id="copyButton">Copiar Código</button>
     </div>
-    <script type="importmap">
-        {
-            "imports": {
-                "@google/generative-ai": "https://esm.run/@google/generative-ai"
-            }
-        }
-    </script>
+  </div>
 
-    <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
 
-        const API_KEY = "AIzaSyB2tqh53E-41CH8FnTVJrOfIEzyp6Y0lAc";  
-        const genAI = new GoogleGenerativeAI(API_KEY);
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
 
-        document.getElementById('generateButton').addEventListener('click', async () => {
-            const inputText = `Genera únicamente código HTML y CSS según esta descripción: ${document.getElementById('inputText').value}`;
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const API_KEY = "AIzaSyB2tqh53E-41CH8FnTVJrOfIEzyp6Y0lAc";
+    const genAI = new GoogleGenerativeAI(API_KEY);
 
-            try {
-                const result = await model.generateContent(inputText);
-                const response = await result.response;
-                document.getElementById("responseText").innerText = await response.text();
-            } catch (error) {
-                console.error('Error al generar contenido', error);
-                document.getElementById("responseText").innerText = "Error al generar código.";
-            }
-        });
+    const responseText = document.getElementById("responseText");
 
-        document.getElementById('copyButton').addEventListener('click', () => {
-            const text = document.getElementById('responseText').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Código copiado al portapapeles!');
-            }).catch(err => {
-                console.error('Error al copiar el código:', err);
-            });
-        });
-    </script>
+    document.getElementById('generateButton').addEventListener('click', async () => {
+      const input = document.getElementById("inputText").value;
+      const prompt = `Genera únicamente código HTML y CSS según esta descripción: ${input}`;
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        responseText.innerText = await response.text();
+      } catch (error) {
+        console.error("Error al generar contenido", error);
+        responseText.innerText = "Error al generar código.";
+      }
+    });
+
+    document.getElementById('copyButton').addEventListener('click', () => {
+      const text = responseText.innerText;
+      const from = text.indexOf("<!DOCTYPE html>");
+      const to = text.lastIndexOf("</html>") + "</html>".length;
+
+      const htmlCode = from !== -1 && to !== -1 ? text.slice(from, to) : text;
+
+      navigator.clipboard.writeText(htmlCode).then(() => {
+        alert("Código HTML copiado al portapapeles.");
+      }).catch(err => {
+        console.error("Error al copiar:", err);
+      });
+    });
+
+    const toggleBtn = document.getElementById("modeToggle");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (prefersDark) {
+      document.body.classList.add("dark-mode");
+      toggleBtn.textContent = "☀️";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark-mode");
+      toggleBtn.textContent = isDark ? "☀️" : "🌙";
+    });
+  </script>
 </body>
 </html>
