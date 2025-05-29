@@ -2,11 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EZ Code</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
     :root {
       --bg-color: #e0e0e0;
       --text-color: #333;
@@ -17,7 +16,6 @@
       --clear-button-color: #dc3545;
       --pre-bg: #f0f0f0;
     }
-
     body.dark-mode {
       --bg-color: #1e1e1e;
       --text-color: #f0f0f0;
@@ -28,11 +26,7 @@
       --clear-button-color: #c82333;
       --pre-bg: #2b2b2b;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       background-color: var(--bg-color);
@@ -44,19 +38,13 @@
       min-height: 100vh;
       transition: background 0.3s, color 0.3s;
     }
-
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.5rem 2rem 0.5rem 2rem;
     }
-
-    .header {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-
+    .header { font-size: 2rem; font-weight: 600; }
     .mode-toggle {
       font-size: 1.5rem;
       background-color: var(--bg-color);
@@ -72,11 +60,9 @@
       align-items: center;
       justify-content: center;
     }
-
     .mode-toggle:hover {
       box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
     }
-
     .content {
       flex-grow: 1;
       display: flex;
@@ -85,7 +71,6 @@
       align-items: center;
       padding: 2rem 1rem;
     }
-
     .input-container {
       width: 100%;
       max-width: 600px;
@@ -93,10 +78,7 @@
       flex-direction: column;
       gap: 1rem;
     }
-
-    input,
-    button,
-    pre {
+    input, button, pre {
       width: 100%;
       padding: 1rem;
       font-size: 1rem;
@@ -107,70 +89,113 @@
       box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
       transition: all 0.3s ease;
     }
-
     input:focus {
       outline: none;
       box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
     }
-
     button {
       background-color: var(--primary-color);
       color: white;
       cursor: pointer;
     }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .copy-button {
-      background-color: var(--button-color);
-      color: white;
-    }
-
-    .clear-button {
-      background-color: var(--clear-button-color);
-      color: white;
-    }
-
+    button:hover { opacity: 0.9; }
+    .copy-button { background-color: var(--button-color); }
+    .clear-button { background-color: var(--clear-button-color); }
     pre {
       background-color: var(--pre-bg);
       overflow: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-
     @media (max-width: 768px) {
-      .header {
-        font-size: 1.5rem;
-      }
-
-      input,
-      button,
-      pre {
-        font-size: 0.95rem;
-        padding: 0.9rem;
-      }
+      .header { font-size: 1.5rem; }
+      input, button, pre { font-size: 0.95rem; padding: 0.9rem; }
     }
-
     @media (max-width: 480px) {
-      .input-container {
-        padding: 0 0.5rem;
-      }
-
-      input,
-      button,
-      pre {
-        font-size: 0.9rem;
-        padding: 0.8rem;
-      }
+      .input-container { padding: 0 0.5rem; }
+      input, button, pre { font-size: 0.9rem; padding: 0.8rem; }
     }
   </style>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkRBU_jEp03ZwsP1B68E28b6jOgYCtUOc",
+      authDomain: "ez-code-4a1eb.firebaseapp.com",
+      projectId: "ez-code-4a1eb",
+      storageBucket: "ez-code-4a1eb.firebasestorage.app",
+      messagingSenderId: "447239620404",
+      appId: "1:447239620404:web:06b0a4728c8f0e9a9c0761"
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.createElement('div');
+    loginForm.className = 'input-container';
+    loginForm.innerHTML = `
+      <input type="email" id="email" placeholder="Correo electrónico">
+      <input type="password" id="password" placeholder="Contraseña">
+      <button id="loginBtn">Iniciar sesión</button>
+      <button id="registerBtn">Registrarse</button>
+    `;
+    const content = document.querySelector('.content');
+    const generatorUI = document.querySelector('.input-container');
+    const logoutBtn = document.getElementById('logoutButton');
+
+    function showLogin() {
+      generatorUI.style.display = 'none';
+      content.appendChild(loginForm);
+    }
+
+    function showGenerator() {
+      generatorUI.style.display = 'flex';
+      if (content.contains(loginForm)) content.removeChild(loginForm);
+    }
+
+    document.getElementById("loginBtn")?.addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .catch(err => alert("Error al iniciar sesión: " + err.message));
+    });
+
+    document.getElementById("registerBtn")?.addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          const uid = userCredential.user.uid;
+          return setDoc(doc(db, "usuarios", uid), { email });
+        })
+        .catch(err => alert("Error al registrarse: " + err.message));
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).catch(err => console.error("Error al cerrar sesión:", err));
+    });
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        showGenerator();
+      } else {
+        showLogin();
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="top-bar">
     <div class="header">EZ Code</div>
-    <button class="mode-toggle" id="modeToggle">🌙</button>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <button class="mode-toggle" id="modeToggle">🌙</button>
+      <button id="logoutButton" class="mode-toggle" title="Cerrar sesión">⎋</button>
+    </div>
   </div>
 
   <div class="content">
@@ -190,13 +215,10 @@
       }
     }
   </script>
-
   <script type="module">
     import { GoogleGenerativeAI } from "@google/generative-ai";
-
     const API_KEY = "AIzaSyB2tqh53E-41CH8FnTVJrOfIEzyp6Y0lAc";
     const genAI = new GoogleGenerativeAI(API_KEY);
-
     const responseText = document.getElementById("responseText");
 
     document.getElementById('generateButton').addEventListener('click', async () => {
@@ -218,14 +240,10 @@
       const text = responseText.innerText;
       const from = text.indexOf("<!DOCTYPE html>");
       const to = text.lastIndexOf("</html>") + "</html>".length;
-
       const htmlCode = from !== -1 && to !== -1 ? text.slice(from, to) : text;
-
       navigator.clipboard.writeText(htmlCode).then(() => {
         alert("Código HTML copiado al portapapeles.");
-      }).catch(err => {
-        console.error("Error al copiar:", err);
-      });
+      }).catch(err => console.error("Error al copiar:", err));
     });
 
     document.getElementById('clearButton').addEventListener('click', () => {
@@ -234,7 +252,6 @@
 
     const toggleBtn = document.getElementById("modeToggle");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
     if (prefersDark) {
       document.body.classList.add("dark-mode");
       toggleBtn.textContent = "☀️";
@@ -247,4 +264,3 @@
   </script>
 </body>
 </html>
-
