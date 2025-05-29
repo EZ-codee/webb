@@ -4,6 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EZ Code - Iniciar Sesión</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkRBU_jEp03ZwsP1B68E28b6jOgYCtUOc",
+      authDomain: "ez-code-4a1eb.firebaseapp.com",
+      projectId: "ez-code-4a1eb",
+      storageBucket: "ez-code-4a1eb.firebasestorage.app",
+      messagingSenderId: "447239620404",
+      appId: "1:447239620404:web:06b0a4728c8f0e9a9c0761"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            document.getElementById("messageArea").innerText = "✅ Inicio de sesión exitoso.";
+            window.location.href = "main.html"; // Redirige a la app principal
+          })
+          .catch((error) => {
+            document.getElementById("messageArea").innerText = "❌ " + error.message;
+          });
+      });
+
+      document.getElementById("registerBtn").addEventListener("click", () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            document.getElementById("messageArea").innerText = "✅ Registro exitoso. Ahora inicia sesión.";
+          })
+          .catch((error) => {
+            document.getElementById("messageArea").innerText = "❌ " + error.message;
+          });
+      });
+    });
+  </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -122,55 +167,7 @@
     <div class="toggle-mode" id="toggleMode">🌙 Modo oscuro</div>
   </div>
 
-  <!-- Firebase y lógica -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCkRBU_jEp03ZwsP1B68E28b6jOgYCtUOc",
-    authDomain: "ez-code-4a1eb.firebaseapp.com",
-    projectId: "ez-code-4a1eb",
-    storageBucket: "ez-code-4a1eb.firebasestorage.app",
-    messagingSenderId: "447239620404",
-    appId: "1:447239620404:web:06b0a4728c8f0e9a9c0761"
-  };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const messageArea = document.getElementById("messageArea");
-
-    document.getElementById("registerBtn").addEventListener("click", () => {
-      createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-        .then((userCredential) => {
-          messageArea.innerText = "✅ Registro exitoso. Ya puedes iniciar sesión.";
-          messageArea.style.color = "var(--success-color)";
-        })
-        .catch((error) => {
-          messageArea.innerText = `❌ ${error.message}`;
-          messageArea.style.color = "var(--error-color)";
-        });
-    });
-
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-        .then((userCredential) => {
-          messageArea.innerText = "🔓 Inicio exitoso. Redirigiendo...";
-          messageArea.style.color = "var(--success-color)";
-          setTimeout(() => {
-            window.location.href = "main.html"; // cámbialo por tu página real
-          }, 1500);
-        })
-        .catch((error) => {
-          messageArea.innerText = `❌ ${error.message}`;
-          messageArea.style.color = "var(--error-color)";
-        });
-    });
-
-    // Modo oscuro
+  <script>
     const body = document.body;
     const toggleBtn = document.getElementById("toggleMode");
 
@@ -178,16 +175,8 @@
       const isDark = body.classList.toggle("dark-mode");
       toggleBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
     });
-
-    // (Opcional) Puedes detectar si el usuario ya está logueado
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("Sesión activa:", user.email);
-      } else {
-        console.log("No hay sesión activa");
-      }
-    });
   </script>
 </body>
 </html>
+
 
