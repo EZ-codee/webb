@@ -63,6 +63,21 @@
     .mode-toggle:hover {
       box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
     }
+    .logout-button {
+      background-color: var(--clear-button-color); /* rojo */
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+    }
+    .logout-button:hover {
+      background-color: #a71d2a; /* rojo más oscuro al pasar el mouse */
+    }
     .content {
       flex-grow: 1;
       display: flex;
@@ -194,7 +209,7 @@
     <div class="header">EZ Code</div>
     <div style="display: flex; gap: 1rem; align-items: center;">
       <button class="mode-toggle" id="modeToggle">🌙</button>
-      <button id="logoutButton" class="mode-toggle" title="Cerrar sesión">Cerrar Sesion</button>
+      <button id="logoutButton" class="logout-button" title="Cerrar sesión">Cerrar Sesión</button>
     </div>
   </div>
 
