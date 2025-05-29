@@ -122,7 +122,55 @@
     <div class="toggle-mode" id="toggleMode">🌙 Modo oscuro</div>
   </div>
 
-  <script>
+  <!-- Firebase y lógica -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCkRBU_jEp03ZwsP1B68E28b6jOgYCtUOc",
+    authDomain: "ez-code-4a1eb.firebaseapp.com",
+    projectId: "ez-code-4a1eb",
+    storageBucket: "ez-code-4a1eb.firebasestorage.app",
+    messagingSenderId: "447239620404",
+    appId: "1:447239620404:web:06b0a4728c8f0e9a9c0761"
+  };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const messageArea = document.getElementById("messageArea");
+
+    document.getElementById("registerBtn").addEventListener("click", () => {
+      createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
+        .then((userCredential) => {
+          messageArea.innerText = "✅ Registro exitoso. Ya puedes iniciar sesión.";
+          messageArea.style.color = "var(--success-color)";
+        })
+        .catch((error) => {
+          messageArea.innerText = `❌ ${error.message}`;
+          messageArea.style.color = "var(--error-color)";
+        });
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
+        .then((userCredential) => {
+          messageArea.innerText = "🔓 Inicio exitoso. Redirigiendo...";
+          messageArea.style.color = "var(--success-color)";
+          setTimeout(() => {
+            window.location.href = "index.html"; // cámbialo por tu página real
+          }, 1500);
+        })
+        .catch((error) => {
+          messageArea.innerText = `❌ ${error.message}`;
+          messageArea.style.color = "var(--error-color)";
+        });
+    });
+
+    // Modo oscuro
     const body = document.body;
     const toggleBtn = document.getElementById("toggleMode");
 
@@ -131,14 +179,15 @@
       toggleBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
     });
 
-    // Listeners de prueba (aún sin Firebase)
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      document.getElementById("messageArea").innerText = "Función de inicio aún no conectada.";
-    });
-
-    document.getElementById("registerBtn").addEventListener("click", () => {
-      document.getElementById("messageArea").innerText = "Función de registro aún no conectada.";
+    // (Opcional) Puedes detectar si el usuario ya está logueado
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Sesión activa:", user.email);
+      } else {
+        console.log("No hay sesión activa");
+      }
     });
   </script>
 </body>
 </html>
+
