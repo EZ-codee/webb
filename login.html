@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EZ Code - Iniciar Sesión</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    :root {
+      --bg-color: #e0e0e0;
+      --text-color: #333;
+      --shadow-light: #ffffff;
+      --shadow-dark: #c1c1c1;
+      --primary-color: #007bff;
+      --error-color: #dc3545;
+      --success-color: #28a745;
+    }
+
+    body.dark-mode {
+      --bg-color: #1e1e1e;
+      --text-color: #f0f0f0;
+      --shadow-light: #2c2c2c;
+      --shadow-dark: #0f0f0f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .auth-container {
+      background-color: var(--bg-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      max-width: 400px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auth-container h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    }
+
+    button {
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn {
+      background-color: var(--primary-color);
+    }
+
+    .register-btn {
+      background-color: var(--error-color);
+    }
+
+    .login-btn:hover,
+    .register-btn:hover {
+      opacity: 0.9;
+    }
+
+    .toggle-mode {
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: var(--primary-color);
+    }
+
+    .message {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h2>EZ Code</h2>
+    <input type="email" id="email" placeholder="Correo electrónico">
+    <input type="password" id="password" placeholder="Contraseña">
+    <button class="login-btn" id="loginBtn">Iniciar Sesión</button>
+    <button class="register-btn" id="registerBtn">Registrarse</button>
+    <div class="message" id="messageArea"></div>
+    <div class="toggle-mode" id="toggleMode">🌙 Modo oscuro</div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.getElementById("toggleMode");
+
+    toggleBtn.addEventListener("click", () => {
+      const isDark = body.classList.toggle("dark-mode");
+      toggleBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
+    });
+
+    // Listeners de prueba (aún sin Firebase)
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      document.getElementById("messageArea").innerText = "Función de inicio aún no conectada.";
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", () => {
+      document.getElementById("messageArea").innerText = "Función de registro aún no conectada.";
+    });
+  </script>
+</body>
+</html>
