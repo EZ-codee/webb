@@ -243,13 +243,6 @@
     const input = document.getElementById("inputText").value;
     const prompt = `Genera únicamente código HTML, CSS y JS en un mismo codigo en español, con comentarios también en español, según esta descripción: ${input}`;
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-<!--aaaaa-->
-    document.getElementById("inputText").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault(); // evita el comportamiento por defecto (como enviar un formulario)
-    document.getElementById("generateButton").click();
-  }
-});
 
 
     try {
