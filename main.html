@@ -209,58 +209,71 @@
   </div>
 
   <script type="importmap">
-    {
-      "imports": {
-        "@google/generative-ai": "https://esm.run/@google/generative-ai"
-      }
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
     }
-  </script>
-  <script type="module">
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-    const API_KEY = "AIzaSyB2tqh53E-41CH8FnTVJrOfIEzyp6Y0lAc";
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    const responseText = document.getElementById("responseText");
+  }
+</script>
 
-    document.getElementById('generateButton').addEventListener('click', async () => {
-      const input = document.getElementById("inputText").value;
-      const prompt = `Genera únicamente código HTML y CSS según esta descripción: ${input}`;
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+<script type="module">
+  import { GoogleGenerativeAI } from "@google/generative-ai";
 
-      try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        responseText.innerText = await response.text();
-      } catch (error) {
-        console.error("Error al generar contenido", error);
-        responseText.innerText = "Error al generar código.";
-      }
-    });
+  const API_KEY = "AIzaSyB2tqh53E-41CH8FnTVJrOfIEzyp6Y0lAc";
+  const genAI = new GoogleGenerativeAI(API_KEY);
 
-    document.getElementById('copyButton').addEventListener('click', () => {
-      const text = responseText.innerText;
-      const from = text.indexOf("<!DOCTYPE html>");
-      const to = text.lastIndexOf("</html>") + "</html>".length;
-      const htmlCode = from !== -1 && to !== -1 ? text.slice(from, to) : text;
-      navigator.clipboard.writeText(htmlCode).then(() => {
-        alert("Código HTML copiado al portapapeles.");
-      }).catch(err => console.error("Error al copiar:", err));
-    });
+  const responseText = document.getElementById("responseText");
 
-    document.getElementById('clearButton').addEventListener('click', () => {
-      responseText.innerText = "";
-    });
+  document.getElementById('generateButton').addEventListener('click', async () => {
+    const input = document.getElementById("inputText").value;
+    const prompt = `Genera únicamente código HTML y CSS según esta descripción: ${input}`;
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const toggleBtn = document.getElementById("modeToggle");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (prefersDark) {
-      document.body.classList.add("dark-mode");
-      toggleBtn.textContent = "☀️";
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      responseText.innerText = await response.text();
+    } catch (error) {
+      console.error("Error al generar contenido", error);
+      responseText.innerText = "Error al generar código.";
     }
+  });
 
-    toggleBtn.addEventListener("click", () => {
-      const isDark = document.body.classList.toggle("dark-mode");
-      toggleBtn.textContent = isDark ? "☀️" : "🌙";
+  document.getElementById('copyButton').addEventListener('click', () => {
+    const text = responseText.innerText;
+    const from = text.indexOf("<!DOCTYPE html>");
+    const to = text.lastIndexOf("</html>") + "</html>".length;
+    const htmlCode = from !== -1 && to !== -1 ? text.slice(from, to) : text;
+
+    navigator.clipboard.writeText(htmlCode).then(() => {
+      alert("Código HTML copiado al portapapeles.");
+    }).catch(err => {
+      console.error("Error al copiar:", err);
     });
-  </script>
+  });
+
+  document.getElementById('clearButton').addEventListener('click', () => {
+    responseText.innerText = "";
+  });
+
+  // 🌙🌞 Modo oscuro
+  const toggleBtn = document.getElementById("modeToggle");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  if (prefersDark) {
+    document.body.classList.add("dark-mode");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    const isDark = document.body.classList.toggle("dark-mode");
+    toggleBtn.textContent = isDark ? "☀️" : "🌙";
+  });
+
+  // 🔐 Botón de cerrar sesión → redirige a index.html
+  document.getElementById('logoutButton').addEventListener('click', () => {
+    window.location.href = "index.html";
+  });
+</script>
 </body>
 </html>
